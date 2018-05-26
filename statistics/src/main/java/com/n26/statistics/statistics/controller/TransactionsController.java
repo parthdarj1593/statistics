@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.n26.statistics.statistics.Interface.StatisticsServiceInterface;
 import com.n26.statistics.statistics.model.Transaction;
-import com.n26.statistics.statistics.services.StatisticsService;
 
 @RestController
 public class TransactionsController {
@@ -21,12 +21,11 @@ public class TransactionsController {
 	private static final Long ONE_MINUTE_MILLIS = 60 * 1000l;
 
 	@Autowired
-	StatisticsService service;
+	StatisticsServiceInterface service;
 
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST)
 	public ResponseEntity<String> newTransaction(@RequestBody Transaction t) {
-		System.out.println(ONE_MINUTE_MILLIS);
-		
+	
 		long timeInMillis = LocalDateTime.now(Clock.systemUTC()).toEpochSecond(ZoneOffset.UTC) *1000;
 		
 		if (t.getTimestamp() < timeInMillis - ONE_MINUTE_MILLIS) {

@@ -13,19 +13,22 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
+import com.n26.statistics.statistics.Interface.StatisticsServiceInterface;
 import com.n26.statistics.statistics.model.Transaction;
 
 @Service
-public class StatisticsService {
+public class StatisticsService  implements StatisticsServiceInterface{
 
 	private static List<Transaction> transcationList = new ArrayList<>();
 	private static final Long ONE_MINUTE_MILLIS = 60 * 1000l;
 
+	@Override
 	public Transaction addTransaction(Transaction t) {
 		transcationList.add(t);
 		return t;
 	}
 
+	@Override
 	public void deleteTransactions() {
 		removeOldTransaction(transcationList.iterator(), isOld());
 	}
@@ -33,7 +36,7 @@ public class StatisticsService {
 	public static <T> void removeOldTransaction(final Iterator<T> it, final Predicate<T> predicate) {
 
 		while (it.hasNext()) {
-			final T t = it.next();
+			 T t = it.next();
 			if (predicate.test(t)) {
 				it.remove();
 			}
@@ -47,6 +50,7 @@ public class StatisticsService {
 		return t -> t.getTimestamp() < timeInMillis - ONE_MINUTE_MILLIS;
 	}
 
+	@Override
 	public Map<String, Number> getStatistics() {
 		Map<String, Number> statisticsData = new LinkedHashMap<String, Number>();
 		
