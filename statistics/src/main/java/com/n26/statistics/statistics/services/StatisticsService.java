@@ -24,6 +24,7 @@ public class StatisticsService  implements StatisticsServiceInterface{
 
 	@Override
 	public Transaction addTransaction(Transaction t) {
+		
 		transcationList.add(t);
 		return t;
 	}
